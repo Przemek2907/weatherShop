@@ -1,0 +1,38 @@
+.products_header {
+  margin: 30px auto 15px 200px;
+}
+
+.product_form {
+  display: grid;
+  height: 50vh;
+  grid-template-columns: repeat(6, 200px);
+  grid-gap: 100px;
+}
+
+.fields_col {
+  grid-column: 2 / span 2;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  margin-top: 30px;
+  justify-content: space-between;
+}
+
+.picture_uploader {
+  margin-top: 30px;
+  grid-column: 4 / span 2;
+  align-self: center;
+  border: 2px blue dashed;
+  height: 50vh;
+  text-align: center;
+  justify-content: center;
+}
+
+.product_field {
+  height: 30px;
+}
+
+.weather_options {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}

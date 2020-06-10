@@ -1,0 +1,70 @@
+$menu-color: rgba(229, 67, 113, 0.4);
+$navbar-font: Consolas, Monaco, Andale Mono, Ubuntu Mono, monospace;
+$singleProduct-width: 420px;
+$singleProduct-height: 500px;
+
+body {
+  margin:0;
+  font-family: $navbar-font;
+}
+
+.navbar{
+  display: flex;
+  justify-content: space-around;
+  background-color: $menu-color;
+}
+
+.logo {
+  align-self: center;
+  font-family: $navbar-font;
+}
+
+.menu{
+  display: flex;
+  list-style: none;
+  justify-content: flex-end;
+}
+
+.menu_item {
+  list-style: none;
+  margin-right: 20px;
+  color: white;
+  text-transform: uppercase;
+  font-family: $navbar-font;
+  font-size: 22px;
+  a{
+    text-decoration: none;
+    color: white;
+  }
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+}
+
+.filters {
+  margin: 30px 0 0 50px;
+  border: 1px solid black;
+  align-self: flex-start;
+}
+
+.products {
+  margin-top: 50px;
+  border: 1px solid black;
+  align-self: center;
+}
+
+.productsList {
+  display: grid;
+  grid-gap: 20px;
+  grid-template-columns: repeat(3, $singleProduct-width);
+}
+
+.singleProduct {
+  border: 1px solid black;
+  height: $singleProduct-height;
+}
