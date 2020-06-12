@@ -4,6 +4,15 @@ import indexScss from '../scss/menu.scss';
 import productsScss from '../scss/products.scss';
 
 const WEATHER_DEFINITIONS_API = 'http://localhost:6082/weather/definitions'
+const PRODUCTS_CATEGORIES_API = 'http://localhost:6082/products/categories'
+
+const PRODUCT_NAME_ID = 'product_name';
+const PRODUCT_DESC_ID = 'product_desc';
+const PRODUCT_CATEGORIES_ID = 'product_categories';
+
+const productName = document.getElementById(PRODUCT_NAME_ID);
+const productDescription = document.getElementById(PRODUCT_DESC_ID);
+const productCategories = document.getElementById(PRODUCT_CATEGORIES_ID);
 
 let productToSave = {
     name: '',
@@ -35,9 +44,9 @@ document.getElementById('load_file').addEventListener('click', async () => {
     )
 })
 
-async function loadWeatherDefinitions() {
+async function GET_API_CALL(api_url) {
 
-    let response = fetch(WEATHER_DEFINITIONS_API, {
+    let response = fetch(api_url, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -45,17 +54,14 @@ async function loadWeatherDefinitions() {
         }
     })
 
-    response.then(
-        x => x.json(),
-        err => console.log(err)
-    ).then(
-        data => processApiData(data)
-    )
+    return (await response).json()
 }
 
-loadWeatherDefinitions()
 
-function processApiData(restApiData) {
+GET_API_CALL(WEATHER_DEFINITIONS_API).then(data => processWeatherCategories(data))
+GET_API_CALL(PRODUCTS_CATEGORIES_API).then(data => createDropDownValuesFromApiResponse(data))
+
+function processWeatherCategories(restApiData) {
     if (restApiData === undefined || restApiData.length === 0) {
         throw new Error("There is no data in the API response")
     }
@@ -83,6 +89,9 @@ function createRadioButtonsBasedOnObject(weatherDefinition) {
         if (event.target.checked) {
             productToSave.weatherCategory.push(newCheckBox.id)
             console.log(productToSave)
+        } else {
+            let removed = productToSave.weatherCategory.splice(productToSave.weatherCategory.indexOf(newCheckBox.id), 1);
+            console.log('Removing..' + removed)
         }
     })
     let newLabel = document.createElement('label');
@@ -93,6 +102,44 @@ function createRadioButtonsBasedOnObject(weatherDefinition) {
     checkboxesDiv.appendChild(newCheckboxContainer)
 
 }
+
+function createDropDownValuesFromApiResponse(dataFromApi) {
+
+    if (dataFromApi === undefined || dataFromApi.length === 0) {
+        throw new Error("There is no data to process from API")
+    }
+
+    [...dataFromApi].forEach(
+        category => {
+            let categoryOption = document.createElement('option');
+            categoryOption.value = category;
+            categoryOption.innerText = category;
+            productCategories.appendChild(categoryOption);
+        }
+    )
+}
+
+// TODO dodać serwis front-endowy budowania obiektu productToSave
+function updateValue(e) {
+    let enteredText = e.target.value;
+    switch (e.target.id) {
+        case PRODUCT_NAME_ID:
+            productToSave.name = enteredText;
+            break;
+        case PRODUCT_DESC_ID:
+            productToSave.description = enteredText;
+            break;
+        default:
+            console.log("Cannot invoke event handler")
+    }
+}
+
+productName.addEventListener('input', updateValue);
+productDescription.addEventListener('input', updateValue);
+
+// TODO przeparsować liste kategorii na dropdown
+// TODO zapisywanie pliku multipart na serwis amazon s3
+
 
 
 

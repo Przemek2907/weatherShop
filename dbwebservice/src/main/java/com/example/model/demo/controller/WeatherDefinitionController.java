@@ -22,8 +22,6 @@ public class WeatherDefinitionController {
 
     @GetMapping("/definitions")
     public List<WeatherDefinitionDto> getWeatherDefinitions() {
-        log.info("was I here in weather definitions??");
-        log.info("my weather definitions --> {}", weatherDictionaryService.getAllWeatherDefinitions());
         return weatherDictionaryService.getAllWeatherDefinitions();
     }
 
