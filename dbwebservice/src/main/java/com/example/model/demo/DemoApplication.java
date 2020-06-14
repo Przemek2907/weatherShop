@@ -4,7 +4,7 @@ import com.example.model.demo.model.Category;
 import com.example.model.demo.model.Product;
 import com.example.model.demo.model.WeatherDictionary;
 import com.example.model.demo.repo.ProductRepository;
-import com.example.model.demo.repo.WeatherDictionaryRepo;
+import com.example.model.demo.repo.WeatherDictionaryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -19,7 +19,7 @@ import java.util.List;
 public class DemoApplication {
 
     private final ProductRepository productRepository;
-    private final WeatherDictionaryRepo weatherDictionaryRepo;
+    private final WeatherDictionaryRepository weatherDictionaryRepo;
 
     public static void main(String[] args) {
         SpringApplication.run(DemoApplication.class, args);

@@ -1,14 +1,16 @@
 package com.example.model.demo.controller;
 
+import com.example.model.demo.dto.AddNewProductDto;
 import com.example.model.demo.dto.ProductDto;
+import com.example.model.demo.dto.ResponseDto;
 import com.example.model.demo.model.Category;
 import com.example.model.demo.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Arrays;
 import java.util.List;
@@ -34,6 +36,18 @@ public class ProductController {
         return Arrays.stream(Category.values()).map(
                 String::valueOf)
                 .collect(Collectors.toList());
+    }
+
+    @PostMapping("/save")
+    public ResponseEntity<ResponseDto> processExcelToLoadGoals(@ModelAttribute AddNewProductDto addNewProductDto) {
+        Long savedProductId = null;
+        try {
+            savedProductId = productService.addNewProduct(addNewProductDto);
+        }catch (Exception e) {
+            return new ResponseEntity(ResponseDto.builder().errorMessage(e.getMessage()).build(), HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+        return new ResponseEntity(ResponseDto.builder().message("New product has been added. Id : " + savedProductId).build(), HttpStatus.CREATED);
+
     }
 
 }

@@ -4,7 +4,6 @@ import lombok.*;
 
 import javax.persistence.*;
 
-
 @Data
 @Entity
 public class ProductWeather {
@@ -14,10 +13,14 @@ public class ProductWeather {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("productId")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private Product product;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("weatherDictionaryId")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private WeatherDictionary weatherDictionary;
 
 

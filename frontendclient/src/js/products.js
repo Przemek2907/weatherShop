@@ -5,44 +5,29 @@ import productsScss from '../scss/products.scss';
 
 const WEATHER_DEFINITIONS_API = 'http://localhost:6082/weather/definitions'
 const PRODUCTS_CATEGORIES_API = 'http://localhost:6082/products/categories'
+const PRODUCT_SAVE_API = 'http://localhost:6082/products/save'
 
 const PRODUCT_NAME_ID = 'product_name';
 const PRODUCT_DESC_ID = 'product_desc';
 const PRODUCT_CATEGORIES_ID = 'product_categories';
+const SAVE_PRODUCT_ID = 'saveBtn';
+const PRODUCT_IMAGE_INPUT_ID = 'picture';
 
 const productName = document.getElementById(PRODUCT_NAME_ID);
 const productDescription = document.getElementById(PRODUCT_DESC_ID);
 const productCategories = document.getElementById(PRODUCT_CATEGORIES_ID);
+const saveProductBtn = document.getElementById(SAVE_PRODUCT_ID);
+const productImageInput = document.getElementById(PRODUCT_IMAGE_INPUT_ID);
 
 let productToSave = {
     name: '',
     description: '',
     category: '',
     price: '',
-    weatherCategory: []
+    currency: '',
+    weatherCategory: [],
+    productImage: null
 }
-
-const productForm = document.getElementById('saveProduct');
-
-function composeProductToSave() {
-    console.log(productForm)
-}
-
-document.getElementById('load_file').addEventListener('click', async () => {
-    let data = new FormData();
-
-    data.append('file', document.getElementById('picture').files[0]);
-
-    let response = await ('url', {
-        method: 'POST',
-        body: data
-    })
-
-    response.json().then(
-        x => console.log(x),
-        error => console.log(error)
-    )
-})
 
 async function GET_API_CALL(api_url) {
 
@@ -55,6 +40,19 @@ async function GET_API_CALL(api_url) {
     })
 
     return (await response).json()
+}
+
+async function POST_API_CALL(api_url, postedData) {
+
+    let response = fetch(api_url, {
+        method: 'POST',
+        headers: {
+            'Access-Control-Allow-Origin': 'http://localhost:3000'
+        },
+        body: postedData
+    })
+
+    return (await response).json();
 }
 
 
@@ -134,11 +132,38 @@ function updateValue(e) {
     }
 }
 
+function saveNewProduct() {
+    productToSave.category = productCategories.options[productCategories.selectedIndex].value;
+
+    //TODO validate all fields in seperate method
+    //TODO pack the object in FormData and send it with the POST method to save
+
+    let productFormData = createFromDataForProduct(productToSave);
+    POST_API_CALL(PRODUCT_SAVE_API, productFormData).then(
+        data => console.log(data)
+    )
+}
+
+function createFromDataForProduct(myProduct) {
+    let formData = new FormData();
+
+    Object.keys(myProduct).forEach(
+        productKey => formData.append(productKey, myProduct[productKey])
+    )
+
+    for(let [name, value] of formData) {
+        console.log(`${name} = ${value}`);
+    }
+
+    return formData;
+}
+
 productName.addEventListener('input', updateValue);
 productDescription.addEventListener('input', updateValue);
-
-// TODO przeparsować liste kategorii na dropdown
-// TODO zapisywanie pliku multipart na serwis amazon s3
+productImageInput.addEventListener('change', (event) => {
+    productToSave.productImage = event.target.files[0]
+})
+saveProductBtn.addEventListener('click', saveNewProduct);
 
 
 

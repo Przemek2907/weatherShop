@@ -11,7 +11,7 @@ services:
       - MYSQL_USER=super_user
       - MYSQL_PASSWORD=test123
     ports:
-      - "3306"
+      - 3306:3306
     volumes:
       - app-volume:/data/mysql
     networks:

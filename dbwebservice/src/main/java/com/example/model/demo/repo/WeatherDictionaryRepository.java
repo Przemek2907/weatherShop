@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface WeatherDictionaryRepo extends JpaRepository<WeatherDictionary, Long> {
+public interface WeatherDictionaryRepository extends JpaRepository<WeatherDictionary, Long> {
 
     Optional<WeatherDictionary> findByWeatherDescription(String description);
 }

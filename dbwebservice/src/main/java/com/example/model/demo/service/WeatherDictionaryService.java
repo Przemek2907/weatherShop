@@ -3,8 +3,7 @@ package com.example.model.demo.service;
 import com.example.model.demo.dto.WeatherDefinitionDto;
 import com.example.model.demo.exceptions.AppException;
 import com.example.model.demo.mapper.Mapper;
-import com.example.model.demo.model.WeatherDictionary;
-import com.example.model.demo.repo.WeatherDictionaryRepo;
+import com.example.model.demo.repo.WeatherDictionaryRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -20,7 +19,7 @@ import java.util.stream.Collectors;
 @Service
 public class WeatherDictionaryService {
 
-    private final WeatherDictionaryRepo weatherDictionaryRepo;
+    private final WeatherDictionaryRepository weatherDictionaryRepo;
 
     //TODO dlaczego klasy serwisowe dzialaly z wyciaganiem z bazy danych bez adnotacji transactional??
 
